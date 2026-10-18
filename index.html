@@ -6,9 +6,10 @@
 <title>Qwen 3.8 27B — Motion Promo</title>
 <!--
   QWEN 3.8 27B — clean/minimal LIGHT promo · 5 scenes · 23s loop
-  BUG FIX: benchmark selectors #bench -> #s3  (numbers/bars now animate)
+  FIX 1: benchmark selectors #bench -> #s3 (numbers/bars now animate)
+  FIX 2: popIn keyframe now has explicit to{opacity:1} — cards & CTA
+         were invisible (0->0) because implicit to fell back to base opacity:0
   Each scene uses a DISTINCT transition: blur / scale / wipe / slide / fade
-  Customize: :root colors · scene copy · data-to (score) / data-v (bar %)
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -119,7 +120,9 @@ body{background:var(--bg);color:var(--ink);overflow:hidden;font-family:var(--fon
 .card{display:flex;flex-direction:column;align-items:center;gap:12px;padding:26px 20px;text-align:center;
   border-radius:18px;border:1px solid var(--line);background:var(--card);box-shadow:0 6px 22px rgba(20,22,30,.05)}
 .card.is-in{animation:popIn .85s var(--ease) both}
-@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(16px)}}
+/* FIX: explicit to-frame so fill:both holds opacity:1
+   (before: implicit to fell back to base opacity:0 -> cards never appeared) */
+@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(16px)}to{opacity:1;transform:none}}
 .ico{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;
   border:1px solid color-mix(in srgb,var(--ac,var(--accent)) 30%,transparent);
   background:color-mix(in srgb,var(--ac,var(--accent)) 8%,transparent)}
@@ -252,7 +255,7 @@ body{background:var(--bg);color:var(--ink);overflow:hidden;font-family:var(--fon
     </div>
   </section>
 
-  <!-- SCENE 3 · BENCHMARKS (wipe-in)  · FIX: selectors target #s3 -->
+  <!-- SCENE 3 · BENCHMARKS (wipe-in) -->
   <section class="scene tl t-wipe" id="s3">
     <div class="bench">
       <div class="s-head">Artificial Analysis · Intelligence Index</div>
@@ -318,7 +321,6 @@ const CYCLE=23000;
 const pfill=$('#pfill'), phaseEl=$('#phase');
 const phases=[[0,'Core'],[600,'Identity'],[5700,'Features'],[10600,'Benchmarks'],[15700,'Stack'],[19000,'Launch']];
 
-/* FIX: benchmark lives in scene #s3 (class .bench), so select by #s3 */
 const cvs=$$('#s3 .cv'), fills=$$('#s3 .fill');
 
 function runCounter(el){
@@ -373,11 +375,9 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 
-resize(); reset();
+reset();
 $('#replay').addEventListener('click',reset);
 requestAnimationFrame(frame);
-
-function resize(){ /* reserved for future responsive tuning */ }
 })();
 </script>
 </body>
