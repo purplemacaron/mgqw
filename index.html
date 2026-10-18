@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen 3.8 27B — Motion Promo</title>
+<!--
+  QWEN 3.8 27B — Single-file motion promo (no dependencies)
+  Loop: 19.4s | Timeline engine: data-driven in <script>
+  Customize: :root colors · copy in .col sections · data-to / data-v numbers
+-->
+<style>
+:root{
+  --cyan:#22d3ee; --violet:#8b5cf6; --pink:#f472b6; --green:#34d399;
+  --bg:#04040c; --ink:#e9edf7; --dim:#8a93ad;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:system-ui,-apple-system,"Segoe UI","Noto Sans KR",Roboto,sans-serif}
+
+/* ---------- background layers ---------- */
+#bg{position:fixed;inset:0;z-index:0}
+.grid{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(120,140,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(120,140,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 72% 62% at 50% 46%,#000 0%,transparent 78%);
+          mask-image:radial-gradient(ellipse 72% 62% at 50% 46%,#000 0%,transparent 78%)}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 95% 85% at 50% 50%,transparent 55%,rgba(2,2,8,.9) 100%)}
+
+/* ---------- stage & scenes ---------- */
+.stage{position:fixed;inset:0;z-index:3;user-select:none}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.col{display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center;width:min(940px,92vw)}
+
+/* ---------- timeline machinery ---------- */
+.tl{opacity:0;pointer-events:none}
+.tl.is-in{opacity:1;pointer-events:auto;animation:tlIn .85s var(--ease) both}
+@keyframes tlIn{from{opacity:0;transform:translateY(34px);filter:blur(9px)}
+                to{opacity:1;transform:none;filter:blur(0)}}
+
+/* ---------- scene 1 : identity ---------- */
+.kicker{font-size:clamp(10.5px,1.3vw,13.5px);letter-spacing:.4em;text-transform:uppercase;
+  color:var(--cyan);display:inline-flex;align-items:center;gap:14px;padding-left:.4em;opacity:0}
+.kicker::before,.kicker::after{content:"";width:36px;height:1px}
+.kicker::before{background:linear-gradient(90deg,transparent,var(--cyan))}
+.kicker::after{background:linear-gradient(90deg,var(--cyan),transparent)}
+.scene.is-in .kicker{animation:tlIn .85s var(--ease) .12s both}
+
+.title{display:flex;flex-direction:column;align-items:center;gap:16px;perspective:900px}
+.t-main{display:flex;align-items:center;perspective:900px;
+  font-size:clamp(52px,11vw,120px);font-weight:900;line-height:1;
+  filter:drop-shadow(0 0 22px rgba(103,232,249,.35)) drop-shadow(0 0 40px rgba(232,121,249,.22))}
+.lsp{width:.34em}
+.letter{display:inline-block;opacity:0;color:var(--lc,#fff)}
+.scene.is-in .letter{animation:letterIn .9s var(--ease) both;
+  animation-delay:calc(.4s + var(--i)*.055s)}
+@keyframes letterIn{
+  from{opacity:0;transform:translateY(60px) scale(.7) rotateX(48deg);filter:blur(12px)}
+  to{opacity:1;transform:none;filter:blur(0)}}
+.t-sub{display:inline-flex;align-items:center;gap:.14em;opacity:0;
+  font-size:clamp(15px,2.2vw,20px);font-weight:700;padding:10px 22px;border-radius:999px;
+  color:var(--cyan);border:1px solid rgba(34,211,238,.45);
+  background:rgba(34,211,238,.07);
+  box-shadow:0 0 26px rgba(34,211,238,.22),inset 0 0 18px rgba(34,211,238,.08)}
+.scene.is-in .t-sub{animation:tlIn .8s var(--ease) 1.05s both}
+.tagline{opacity:0;font-size:clamp(15px,2.1vw,20px);font-weight:500;line-height:1.5;
+  letter-spacing:.05em;color:#cdd6ea;max-width:560px}
+.scene.is-in .tagline{animation:tlIn .85s var(--ease) 1.7s both}
+
+/* ---------- scene 2 : features ---------- */
+.s-head{opacity:0;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--violet);
+  filter:drop-shadow(0 0 12px rgba(139,92,246,.6));margin-bottom:24px}
+.scene.is-in .s-head{animation:tlIn .7s var(--ease) .05s both}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;width:min(720px,90vw)}
+.card{display:flex;flex-direction:column;align-items:center;gap:12px;padding:26px 20px;
+  text-align:center;border-radius:18px;border:1px solid rgba(140,160,255,.16);
+  background:linear-gradient(180deg,rgba(125,135,255,.08),rgba(125,135,255,.02));
+  box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card.is-in{animation:popIn .9s var(--ease) both}
+@keyframes popIn{from{opacity:0;transform:scale(.7) translateY(26px);filter:blur(10px)}}
+.ico{width:46px;height:46px;display:grid;place-items:center;border-radius:13px;
+  border:1px solid rgba(34,211,238,.35);
+  border-color:color-mix(in srgb,var(--ac,var(--cyan)) 45%,transparent);
+  background:radial-gradient(circle at 30% 25%,rgba(34,211,238,.28),rgba(139,92,246,.14) 70%)}
+.ico svg{width:22px;height:22px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+  stroke:var(--ac,var(--cyan))}
+.card h3{font-size:14.5px;font-weight:700;letter-spacing:.09em}
+.card p{font-size:12.5px;line-height:1.55;color:var(--dim)}
+
+/* ---------- scene 3 : benchmarks ---------- */
+.bench{display:flex;flex-direction:column;align-items:center;gap:28px;width:min(720px,92vw)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%}
+.stat{display:flex;flex-direction:column;align-items:center;gap:10px}
+.numline{display:flex;align-items:baseline;gap:3px;font-size:clamp(30px,5vw,56px);font-weight:800;line-height:1;
+  color:#eef2ff;filter:drop-shadow(0 0 18px rgba(120,150,255,.4))}
+.suf{font-size:.55em;font-weight:700;color:var(--cyan)}
+.lbl{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}
+.bars{display:flex;flex-direction:column;gap:12px;width:min(560px,88vw)}
+.brow{display:grid;grid-template-columns:104px 1fr 56px;align-items:center;gap:14px}
+.bl{font-size:12px;letter-spacing:.05em;color:var(--dim);text-align:right}
+.track{height:8px;border-radius:99px;background:rgba(140,160,255,.13);overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  box-shadow:0 0 14px rgba(34,211,238,.5);transition:width 1.3s var(--ease)}
+.bv{font-size:12.5px;font-weight:700;color:var(--cyan)}
+
+/* ---------- scene 4 : CTA ---------- */
+.cta{display:flex;flex-direction:column;align-items:center;gap:16px}
+.cta-btn{position:relative;opacity:0;padding:17px 44px;border-radius:999px;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;line-height:1;letter-spacing:.16em;
+  color:#031018;text-decoration:none;
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  box-shadow:0 0 34px rgba(34,211,238,.45),0 10px 30px rgba(0,0,0,.4);
+  transition:transform .3s var(--ease)}
+.cta-btn:hover{transform:translateY(-3px)}
+.cta-btn::after{content:"";position:absolute;inset:-2px;border-radius:inherit;
+  border:1px solid var(--cyan);animation:pulse 2.1s var(--ease) infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.65}75%,100%{transform:scale(1.32);opacity:0}}
+.scene.is-in .cta-btn{animation:popIn .85s var(--ease) .1s both}
+.cta-sub{opacity:0;font-size:12.5px;letter-spacing:.06em;color:var(--dim)}
+.scene.is-in .cta-sub{animation:tlIn .8s var(--ease) .55s both}
+
+/* ---------- HUD / meta ---------- */
+.meta{position:fixed;top:20px;z-index:5;pointer-events:none;
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+.meta-l{left:24px}.meta-r{right:24px;text-align:right}
+.hud{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:6;
+  display:flex;align-items:center;gap:16px}
+.pbar{width:min(320px,38vw);height:3px;border-radius:99px;background:rgba(140,160,255,.16);overflow:hidden}
+.pfill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink))}
+.phase{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);min-width:120px}
+#replay{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  border:1px solid rgba(140,160,255,.3);background:rgba(140,160,255,.08);color:var(--ink);
+  font-size:15px;transition:.3s}
+#replay:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(34,211,238,.4)}
+
+/* ---------- exit (declared LAST so it wins) ---------- */
+.tl.is-out{animation:tlOut .7s var(--ease) both;pointer-events:none}
+@keyframes tlOut{to{opacity:0;transform:translateY(-26px);filter:blur(7px)}}
+
+/* ---------- responsive ---------- */
+@media (max-width:600px){
+  .cards{grid-template-columns:1fr}
+  .brow{grid-template-columns:76px 1fr 48px;gap:10px}
+  .phase,.meta-r{display:none}
+  .col{gap:20px}
+  .card{padding:20px 16px}
+}
+@media (max-height:600px){ .col{transform:scale(.8)} .bench{transform:scale(.82)} }
+@media (prefers-reduced-motion:reduce){ .cta-btn::after{animation:none} }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+<div class="vignette"></div>
+
+<div class="meta meta-l">Qwen 3.8 · 27B — Promo Sequence</div>
+<div class="meta meta-r">19.4s Loop · 60fps</div>
+
+<main class="stage">
+
+  <!-- SCENE 1 · IDENTITY -->
+  <section class="scene tl" id="s1">
+    <div class="col">
+      <div class="kicker">Next-Gen Language Model</div>
+      <div class="title">
+        <div class="t-main">
+          <span class="letter" style="--i:0;--lc:#8ef2ff">Q</span><span class="letter" style="--i:1;--lc:#67e8f9">W</span><span class="letter" style="--i:2;--lc:#5eead4">E</span><span class="letter" style="--i:3;--lc:#a5b4fc">N</span><span class="lsp"></span><span class="letter" style="--i:4;--lc:#c4b5fd">3</span><span class="letter" style="--i:5;--lc:#c4b5fd">.</span><span class="letter" style="--i:6;--lc:#e879f9">8</span>
+        </div>
+        <div class="t-sub">
+          <span class="letter" style="--i:7;--lc:#22d3ee">2</span><span class="letter" style="--i:8;--lc:#22d3ee">7</span><span class="letter" style="--i:9;--lc:#22d3ee">B</span>
+        </div>
+      </div>
+      <div class="tagline">Small in footprint. Enormous in capability. Built for builders.</div>
+    </div>
+  </section>
+
+  <!-- SCENE 2 · FEATURES -->
+  <section class="scene tl" id="s2">
+    <div class="col">
+      <div class="s-head">Core Strengths</div>
+      <div class="cards">
+        <div class="card tl" id="c1" style="--ac:#22d3ee">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 12 10 5 10-5"/><path d="m2 17 10 5 10-5"/></svg></span>
+          <h3>27B PARAMETERS</h3>
+          <p>Dense 27-billion weights tuned for the sweet spot of quality and speed.</p>
+        </div>
+        <div class="card tl" id="c2" style="--ac:#8b5cf6">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg></span>
+          <h3>DEEP REASONING</h3>
+          <p>Multi-step logic, planning and tool use — sharpened by reinforcement learning.</p>
+        </div>
+        <div class="card tl" id="c3" style="--ac:#f472b6">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/><path d="m13 4-2 16"/></svg></span>
+          <h3>EXPERT-CODE</h3>
+          <p>Reads, writes and refactors code fluently across 20+ languages.</p>
+        </div>
+        <div class="card tl" id="c4" style="--ac:#34d399">
+          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.2 3.6 3.2 14.4 0 18M12 3c-3.2 3.6-3.2 14.4 0 18"/></svg></span>
+          <h3>MULTILINGUAL</h3>
+          <p>Fluent across 119 languages — including native-level Korean.</p>
+        </div>
+      </대역></div>
+    </div>
+  </section>
+
+  <!-- SCENE 3 · BENCHMARKS (numbers below are placeholders) -->
+  <section class="scene tl" id="s3">
+    <div class="bench">
+      <div class="s-head">Performance</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="numline"><span class="cv" data-to="128" data-dec="0">0</span><span class="suf">K</span></div>
+          <span class="lbl">Context Window</span>
+        </div>
+        <div class="stat">
+          <div class="numline"><span class="cv" data-to="2.4" data-dec="1">0</span><span class="suf">×</span></div>
+          <span class="lbl">Faster Inference</span>
+        </div>
+        <div class="stat">
+          <div class="numline"><span class="cv" data-to="119" data-dec="0">0</span><span class="suf">+</span></div>
+          <span class="lbl">Languages</span>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="brow"><span class="bl">MMLU</span><div class="track"><div class="fill" data-v="89.4"></div></div><span class="bv">89.4</span></div>
+        <div class="brow"><span class="bl">HumanEval</span><div class="track"><div class="fill" data-v="81.2"></div></div><span class="bv">81.2</span></div>
+        <div class="brow"><span class="bl">GPQA</span><div class="track"><div class="fill" data-v="68.9"></div></div><span class="bv">68.9</span></div>
+        <div class="brow"><span class="bl">Math</span><div class="track"><div class="fill" data-v="92.6"></div></div><span class="bv">92.6</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4 · CTA -->
+  <section class="scene tl" id="s4">
+    <div class="cta">
+      <a class="cta-btn" href="https://huggingface.co/Qwen" target="_blank" rel="noopener">START BUILDING →</a>
+      <div class="cta-sub">Open weights · Apache-2.0 · Available on Hugging Face &amp; ModelScope</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="hud">
+  <span class="phase" id="phase">Core</span>
+  <div class="pbar"><div class="pfill" id="pfill"></div></div>
+  <button id="replay" title="Replay">↻</button>
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ss=v=>{v=clamp(v,0,1);return v*v*(3-2*v)};
+
+/* ============ CANVAS : particle field / neural orb ============ */
+const cv=$('#bg'),cx=cv.getContext('2d');
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=0,H=0,DPR=1,N=90,P=[],mouse={x:-9e3,y:-9e3};
+
+function seed(){
+  P=Array.from({length:N},()=>({
+    x:Math.random()*W, y:Math.random()*H,
+    bx:Math.random()*W, by:Math.random()*H,
+    ph:Math.random()*Math.PI*2, sp:.5+Math.random()*.9,
+    r:.9+Math.random()*1.6, or:26+Math.random()*74,
+    pk:Math.random()<.18
+  }));
+}
+function resize(){
+  DPR=Math.min(2,devicePixelRatio||1);
+  W=innerWidth; H=innerHeight;
+  cv.width=W*DPR; cv.height=H*DPR;
+  cx.setTransform(DPR,0,0,DPR,0,0);
+  N=Math.round(clamp(W*H/15000,60,150));
+  seed();
+}
+addEventListener('resize',resize);
+addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+addEventListener('pointerleave',()=>{mouse.x=-9e3;mouse.y=-9e3;});
+
+function draw(now,t){
+  cx.clearRect(0,0,W,H);
+  const C={x:W/2,y:H*.46};
+  const b=ss((t-2200)/1200);              // converge → flow blend
+  const tt=now*.001;
+  const glow=ss((t-500)/1300)*(1-ss((t-2200)/1200));
+
+  if(glow>0){
+    const R=150+90*glow, g=cx.createRadialGradient(C.x,C.y,0,C.x,C.y,R);
+    g.addColorStop(0,`rgba(90,220,255,${.5*glow})`);
+    g.addColorStop(.5,`rgba(120,120,255,${.18*glow})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=g; cx.fillRect(C.x-320,C.y-320,640,640);
+  }
+
+  const h=196+40*Math.sin(tt*.15);
+  for(const p of P){
+    const ox=C.x+Math.cos(p.ph*2+tt*.6)*p.or,
+          oy=C.y+Math.sin(p.ph*2+tt*.6)*p.or*.55;
+    const fx=p.bx+Math.sin(tt*.28*p.sp+p.ph)*48,
+          fy=p.by+Math.cos(tt*.23*p.sp+p.ph*1.7)*36;
+    if(REDUCED){ p.x=fx; p.y=fy; continue; }
+    const tx=(1-b)*ox+b*fx, ty=(1-b)*oy+b*fy;
+    p.x+=(tx-p.x)*.075; p.y+=(ty-p.y)*.075;
+    const dx=p.x-mouse.x, dy=p.y-mouse.y, d2=dx*dx+dy*dy;
+    if(d2<19600){ const d=Math.sqrt(d2)||1, f=(1-d/140)*.9;
+      p.x+=dx/d*f*5; p.y+=dy/d*f*5; }
+  }
+
+  const la=(1-b)*.1+.3*b, drawn=[];
+  cx.lineWidth=1;
+  outer: for(let i=0;i<P.length;i++) for(let j=i+1;j<P.length;j++){
+    const a=P[i],c=P[j],dx=a.x-c.x,dy=a.y-c.y,d2=dx*dx+dy*dy;
+    if(d2<12100){
+      const d=Math.sqrt(d2), al=(1-d/110)*la;
+      cx.strokeStyle=`hsla(${h},90%,68%,${al})`;
+      cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(c.x,c.y); cx.stroke();
+      if(++drawn.length>240) break outer;
+    }
+  }
+  for(const p of P){
+    const pr=REDUCED?p.r:p.r*(1+.25*Math.sin(tt*2*p.sp+p.ph));
+    cx.fillStyle=p.pk?`hsla(${h+95},85%,70%,.95)`:`hsla(${h},92%,72%,.9)`;
+    cx.beginPath(); cx.arc(p.x,p.y,pr,0,7); cx.fill();
+  }
+}
+
+/* ============ TIMELINE ENGINE ============ */
+const CYCLE=19400;
+const pfill=$('#pfill'), phaseEl=$('#phase');
+const phases=[[0,'Core'],[600,'Identity'],[5300,'Features'],[9800,'Benchmarks'],[15900,'Launch']];
+
+const cvs=$$('#bench .cv'), fills=$$('#bench .fill');
+
+function runCounter(el){
+  if(el.dataset.done) return;
+  el.dataset.done='1';
+  const to=+el.dataset.to, dec=+(el.dataset.dec||0), t0=performance.now(), dur=1500;
+  (function step(n){
+    const k=Math.min(1,(n-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=(to*e).toFixed(dec);
+    if(k<1) requestAnimationFrame(step);
+  })(t0);
+}
+
+const items=[
+  {el:$('#s1'), s:600,  e:5000},
+  {el:$('#s2'), s:5300, e:9500},
+  {el:$('#c1'), s:5300},
+  {el:$('#c2'), s:6200},
+  {el:$('#c3'), s:7100},
+  {el:$('#c4'), s:8000},
+  {el:$('#s3'), s:9800, e:15600, fns(){
+     cvs.forEach(runCounter);
+     fills.forEach(f=>f.style.width=f.dataset.v+'%');
+  }},
+  {el:$('#s4'), s:15900, e:18900},
+].map(it=>({...it,on:false,off:false}));
+
+let cycleStart=performance.now();
+
+function reset(){
+  cycleStart=performance.now();
+  for(const it of items){ it.on=it.off=false; it.el.classList.remove('is-in','is-out'); }
+  for(const c of cvs){ delete c.dataset.done; c.textContent='0'; }
+  for(const f of fills){ f.style.transition='none'; f.style.width='0%'; void f.offsetWidth; f.style.transition=''; }
+  seed();
+  pfill.style.width='0%';
+}
+
+function timeline(t){
+  for(const it of items){
+    if(!it.on && t>=it.s){
+      it.on=true;
+      it.el.classList.add('is-in'); it.el.classList.remove('is-out');
+      it.fns && it.fns();
+    }
+    if(it.e!=null && !it.off && t>=it.e){ it.off=true; it.el.classList.add('is-out'); }
+  }
+  pfill.style.width=(t/CYCLE*100).toFixed(2)+'%';
+  let ph='Core';
+  for(const [a,n] of phases) if(t>=a) ph=n;
+  phaseEl.textContent=ph;
+}
+
+function frame(now){
+  let t=now-cycleStart;
+  if(t>=CYCLE){ reset(); t=0; }
+  timeline(t);
+  draw(now,t);
+  requestAnimationFrame(frame);
+}
+
+resize();
+reset();
+$('#replay').addEventListener('click',reset);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
